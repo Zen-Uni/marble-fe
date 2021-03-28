@@ -3,12 +3,17 @@ module.exports = {
   // 因此将版本号固定在了 package.json 中
   extends: [
     'standard-with-typescript',
-    'prettier/@typescript-eslint', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+    /**
+     * Changed: All configs have been merged into one
+     * https://github.com/prettier/eslint-config-prettier/blob/main/CHANGELOG.md#version-800-2021-02-21
+     */
+    'prettier', // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
     'plugin:prettier/recommended', //
     'plugin:react/recommended',
   ],
   parserOptions: {
     project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   rules: {
     'no-console': 'warn',
@@ -49,4 +54,4 @@ module.exports = {
       // It will default to "detect" in the future
     },
   },
-}
+};
