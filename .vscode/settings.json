@@ -1,5 +1,20 @@
 {
-  "cSpell.words": [
-    "TTFB"
-  ]
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"cSpell.words": ["cjsx", "mjsx"],
+	"[less]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"files.eol": "\r\n",
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }
