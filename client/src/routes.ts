@@ -7,6 +7,7 @@ import LoginAndRegister from './modules/LoginAndRegister';
 import Main from './modules/Main';
 import Admin from './modules/Admin';
 import Project from './modules/Project';
+import Test from 'modules/test';
 
 const routes = [
   // 主页路由
@@ -31,6 +32,12 @@ const routes = [
     path: '/admin',
     exact: true,
     component: Admin,
+  },
+  // 测试数据用的路由
+  {
+    path: '/test',
+    exact: true,
+    component: Test,
   },
 ];
 
