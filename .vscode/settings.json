@@ -9,6 +9,8 @@
 		"source.fixAll.eslint": true
 	},
 	"cSpell.words": [
+		"Cascader",
+		"Craco",
 		"antd",
 		"browserslist",
 		"cjsx",

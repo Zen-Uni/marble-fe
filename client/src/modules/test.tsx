@@ -23,7 +23,7 @@ const propsToState = (state: any) => {
   };
 };
 
-const propsToDisptch = (dispatch: any) => {
+const propsToDispatch = (dispatch: any) => {
   return {
     changeUserName(name: string) {
       const action = changeNameAction(name);
@@ -32,4 +32,4 @@ const propsToDisptch = (dispatch: any) => {
   };
 };
 
-export default connect(propsToState, propsToDisptch)(Test);
+export default connect(propsToState, propsToDispatch)(Test);

@@ -1,6 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './static/App.less';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter as Router } from 'react-router-dom';
 import routes from './routes';
