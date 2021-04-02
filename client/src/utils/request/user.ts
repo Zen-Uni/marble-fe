@@ -10,9 +10,22 @@ export enum Gender {
   FEMALE = 2,
 }
 
+export enum GenderCN {
+  UNKNOWN = '未知',
+  MALE = '男',
+  FEMALE = '女',
+}
+
 export enum Group {
-  COMMON = 0,
+  SUBSCRIBER = 0,
   ADMIN = 1,
+  SUPER_ADMIN = 2,
+}
+
+export enum GroupCN {
+  SUBSCRIBER = '普通用户',
+  ADMIN = '管理员',
+  SUPER_ADMIN = '超级管理员',
 }
 
 export interface User {
