@@ -1,5 +1,5 @@
 import { request } from './index';
-import { ACCESS_TOKEN_NAME } from '../const';
+import { Restful } from './type';
 // import { store } from '@/store';
 
 const baseUrl = '/api/user';
@@ -41,15 +41,11 @@ export interface LoggedInUser extends User {
  * @param { string } password
  */
 export const login = async (user: Partial<User>) => {
-  const loggedInUser = await request<LoggedInUser>({
+  const loggedInUser = await request<Restful<LoggedInUser>>({
     method: 'POST',
     url: `${baseUrl}/login`,
     data: user,
   });
-  if (loggedInUser) {
-    // 存储token
-    localStorage.setItem(ACCESS_TOKEN_NAME, loggedInUser.token);
-  }
   return loggedInUser;
 };
 
@@ -57,7 +53,7 @@ export const login = async (user: Partial<User>) => {
  * 通过id查询用户
  */
 export const retrieve = async (id: number) => {
-  return await request<User>({
+  return await request<Restful<User>>({
     method: 'GET',
     url: `${baseUrl}/retrieve`,
     params: {
@@ -72,7 +68,7 @@ export const retrieve = async (id: number) => {
  * @param { number } capacity - 每页多少行数据
  */
 export const retrieveAll = async (page: number, capacity: number) => {
-  return await request<User[]>({
+  return await request<Restful<User[]>>({
     method: 'GET',
     url: `${baseUrl}/retrieve`,
     params: {
@@ -86,7 +82,7 @@ export const retrieveAll = async (page: number, capacity: number) => {
  * 用户注册
  */
 export const register = async (user: Partial<User>) => {
-  return await request<User>({
+  return await request<Restful<User>>({
     method: 'POST',
     url: `${baseUrl}/register`,
     data: user,
@@ -97,12 +93,9 @@ export const register = async (user: Partial<User>) => {
  * 编辑用户信息
  */
 export const edit = async (user: Partial<User>) => {
-  const newUser = await request<User>({
+  return await request<Restful<User>>({
     method: 'POST',
     url: `${baseUrl}/edit`,
     data: user,
   });
-  if (!newUser) return; // 有可能请求失败，响应体并没有携带newUser信息
-  // store.dispatch.common.SET_USERINFO(newUser); // redux更新当前帐号用户信息
-  return newUser;
 };

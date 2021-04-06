@@ -36,9 +36,8 @@ export const request = async <T>(config: AxiosRequestConfig) => {
       //   title: '警告',
       //   content: res.data.message,
       // });
-    } else {
-      return (res.data.data as T) || ((res.data as unknown) as T);
     }
+    return (res.data as unknown) as T;
   } catch (err) {
     console.log(err.response);
     console.error('网络错误', err);
