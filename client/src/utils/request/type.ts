@@ -6,8 +6,10 @@ export enum CodeDictionary {
   JWT_ERROR__EXPIRED = 101,
 }
 
-export interface Restful<T> {
+export interface _Restful {
   code: CodeDictionary;
   message: string;
+}
+export interface Restful<T> extends _Restful {
   data?: T;
 }
