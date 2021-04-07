@@ -1,5 +1,7 @@
 import { Button, Col, Form, Input, Row, Select } from 'antd';
 import { FC, useEffect, useState } from 'react';
+import { PathName } from 'routes';
+import { Link } from 'react-router-dom';
 import { Gender, GenderCN, User } from 'utils/request/user';
 import './index.less';
 
@@ -9,7 +11,7 @@ interface RegisterFormProps {
   loading: boolean;
   captchaLoading: boolean;
   onFinish: (values: Partial<User>) => void;
-  sendCaptcha: () => Promise<void>;
+  sendCaptcha: (user: Partial<User>) => Promise<void>;
 }
 
 const genderSelector = [
@@ -38,7 +40,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({
   const [form] = Form.useForm();
 
   const [timer, setTimer] = useState(-1); // 计时器编号
-  const [timerText, setTimerText] = useState(0); // 倒计时
+  const [timerText, setTimerText] = useState('0 秒'); // 倒计时
   const handleCaptchaTimeout = () => {
     if (timer !== -1) return;
     const recur = (time: number) => {
@@ -46,10 +48,10 @@ export const RegisterForm: FC<RegisterFormProps> = ({
         setTimer(-1);
         return;
       }
-      setTimerText(time);
+      setTimerText(`${time} 秒`);
       setTimer(
         (setTimeout(() => {
-          setTimerText(time);
+          setTimerText(`${time} 秒`);
           recur(time - 1);
         }, 1000) as unknown) as number,
       );
@@ -74,18 +76,7 @@ export const RegisterForm: FC<RegisterFormProps> = ({
       sm: { span: 16 },
     },
   };
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
-    },
-  };
+
   const onGenderChange = (value: Gender) => {
     form.setFieldsValue({
       gender: value,
@@ -124,66 +115,6 @@ export const RegisterForm: FC<RegisterFormProps> = ({
       >
         <Input disabled={loading} />
       </Form.Item>
-      <Form.Item name="gender" label="性别">
-        <Select
-          defaultValue={Gender.UNKNOWN}
-          onChange={onGenderChange}
-          disabled={loading}
-        >
-          {genderSelector.map(({ value, label }) => (
-            <Option key={label} value={value}>
-              {label}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        name="email"
-        label="邮箱"
-        rules={[
-          {
-            type: 'email',
-            message: '请输入合法的邮箱',
-          },
-          {
-            required: true,
-            message: '邮箱不能为空',
-          },
-        ]}
-      >
-        <Input disabled={loading} />
-      </Form.Item>
-
-      <Form.Item label="验证码">
-        <Row gutter={8}>
-          <Col span={14}>
-            <Form.Item
-              name="captcha"
-              noStyle
-              rules={[
-                {
-                  required: true,
-                  message: '请输入邮箱验证码',
-                },
-              ]}
-            >
-              <Input disabled={loading} />
-            </Form.Item>
-          </Col>
-          <Col span={10}>
-            <Button
-              loading={captchaLoading}
-              disabled={timer !== -1}
-              onClick={async () => {
-                await sendCaptcha();
-                handleCaptchaTimeout();
-              }}
-            >
-              {timer === -1 ? '发送验证码' : timerText}
-            </Button>
-          </Col>
-        </Row>
-      </Form.Item>
       <Form.Item
         name="password"
         label="密码"
@@ -219,11 +150,82 @@ export const RegisterForm: FC<RegisterFormProps> = ({
       >
         <Input.Password disabled={loading} />
       </Form.Item>
-      <Form.Item {...tailFormItemLayout}>
+      <Form.Item name="gender" label="性别">
+        <Select
+          defaultValue={Gender.UNKNOWN}
+          onChange={onGenderChange}
+          disabled={loading}
+        >
+          {genderSelector.map(({ value, label }) => (
+            <Option key={label} value={value}>
+              {label}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        name="email"
+        label="邮箱"
+        rules={[
+          {
+            type: 'email',
+            message: '请输入合法的邮箱',
+          },
+          {
+            required: true,
+            message: '邮箱不能为空',
+          },
+        ]}
+      >
+        <Input disabled={loading} />
+      </Form.Item>
+
+      <Form.Item label="验证码">
+        <Row gutter={8}>
+          <Col span={13}>
+            <Form.Item
+              name="captcha"
+              noStyle
+              rules={[
+                {
+                  required: true,
+                  message: '请输入邮箱验证码',
+                },
+              ]}
+            >
+              <Input disabled={loading} />
+            </Form.Item>
+          </Col>
+          <Col span={10}>
+            <Button
+              style={{ minWidth: '102px' }}
+              loading={captchaLoading}
+              disabled={timer !== -1}
+              onClick={async () => {
+                if (!form.getFieldValue('email')) {
+                  form.validateFields(['email']);
+                  form.scrollToField('email', {
+                    behavior: 'smooth',
+                  });
+                } else {
+                  await sendCaptcha(form.getFieldsValue());
+                  handleCaptchaTimeout();
+                }
+              }}
+            >
+              {timer === -1 ? '发送验证码' : timerText}
+            </Button>
+          </Col>
+        </Row>
+      </Form.Item>
+      <div className="Sign--register--action">
+        <Link to={PathName.LOGIN} replace={true}>
+          <Button type="link">返回登录</Button>
+        </Link>
         <Button type="primary" htmlType="submit">
           注册
         </Button>
-      </Form.Item>
+      </div>
     </Form>
   );
 };

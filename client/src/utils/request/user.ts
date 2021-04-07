@@ -1,6 +1,5 @@
 import { request } from './index';
-import { Restful } from './type';
-// import { store } from '@/store';
+import { Restful, _Restful } from './type';
 
 const baseUrl = '/api/user';
 
@@ -98,6 +97,17 @@ export const register = async (user: Partial<User>) => {
   return await request<Restful<User>>({
     method: 'POST',
     url: `${baseUrl}/register`,
+    data: user,
+  });
+};
+
+/**
+ * 发送邮箱验证码
+ */
+export const sendCaptcha = async (user: Partial<User>) => {
+  return await request<_Restful>({
+    method: 'POST',
+    url: `${baseUrl}/captcha`,
     data: user,
   });
 };

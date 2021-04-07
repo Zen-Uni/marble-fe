@@ -1,43 +1,49 @@
-import { ComponentType, useState } from 'react';
-import { Typography } from 'antd';
-import { RouteConfigComponentProps } from 'react-router-config';
+import { FC, useState } from 'react';
+import { message, Typography } from 'antd';
 import { RegisterForm } from './RegisterForm';
 import { User } from 'utils/request/user';
-// import { PathName } from 'routes';
-const { Title } = Typography;
+import { Redirect } from 'react-router-dom';
+import { user as request } from 'utils/request';
+import { PathName } from 'routes';
 
-const Register: ComponentType<RouteConfigComponentProps<any>> = ({
-  history,
-}) => {
+const { Title } = Typography;
+const Register: FC = () => {
   const [loading, setLoading] = useState(false);
   const [captchaLoading, setCaptchaLoading] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
-  // TODO: 调用注册接口 & 发送验证码接口
-  const onFinish = (user: Partial<User>) => {
+  if (isRegistered) {
+    message.success('注册成功，跳转到登陆页面');
+    return <Redirect to={PathName.LOGIN} />;
+  }
+  const onFinish = async (user: Partial<User>) => {
     setLoading(true);
-    console.log(user);
-    // TODO: 弹出注册成功窗口，并且在回调内跳转到登录窗口
-    // history.push(PathName.LOGIN)
+    const res = await request.register(user);
+    setLoading(false);
+    if (res?.code === 0) {
+      setIsRegistered(true);
+    }
   };
-  const sendCaptcha = async () => {
+
+  const handleSendCaptcha = async (user: Partial<User>) => {
     setCaptchaLoading(true);
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve('');
-      }, 1000);
-    });
+    const res = await request.sendCaptcha(user);
     setCaptchaLoading(false);
+    if (res?.code === 0) {
+      message.info(res.message);
+    }
   };
+
   return (
     <div>
       <Typography>
-        <Title>注册</Title>
+        <Title level={2}>注册</Title>
       </Typography>
       <RegisterForm
         loading={loading}
         captchaLoading={captchaLoading}
         onFinish={onFinish}
-        sendCaptcha={sendCaptcha}
+        sendCaptcha={handleSendCaptcha}
       />
     </div>
   );
