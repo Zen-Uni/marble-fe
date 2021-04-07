@@ -9,6 +9,7 @@ import Admin from './modules/Admin';
 import Project from './modules/Project';
 import Test from 'modules/test';
 import Register from './modules/LoginAndRegister/Register';
+import Login from 'modules/LoginAndRegister/Login';
 
 export enum PathName {
   MAIN = '/main',
@@ -37,12 +38,11 @@ const routes = [
     path: PathName.SIGN,
     component: LoginAndRegister,
     routes: [
-      // {
-      // TODO: 登陆页面
-      //   path: PathName.LOGIN,
-      //   exact: true,
-      //   component: Login,
-      // },
+      {
+        path: PathName.LOGIN,
+        exact: true,
+        component: Login,
+      },
       {
         path: PathName.REGISTER,
         exact: true,

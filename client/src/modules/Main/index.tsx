@@ -1,13 +1,36 @@
-import React from 'react';
-import { renderRoutes } from 'react-router-config';
+import { FC } from 'react';
+import { connect } from 'react-redux';
+import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
+import { Redirect } from 'react-router-dom';
+import { PathName } from 'routes';
 
-function Main(props: any) {
+const propsToState = (state: any) => {
+  return {
+    isLogin: state.common.isLogin,
+  };
+};
+
+const propsToDispatch = (dispatch: any) => {
+  return {};
+};
+
+type MainProps = ReturnType<typeof propsToState> &
+  ReturnType<typeof propsToDispatch>;
+
+const Main: FC<RouteConfigComponentProps<any> & MainProps> = ({
+  route,
+  isLogin,
+}) => {
+  if (!isLogin) {
+    return <Redirect to={PathName.LOGIN}></Redirect>;
+  }
+
   return (
     <div>
       <div>this is main page</div>
-      {renderRoutes(props.route.routes)}
+      {renderRoutes(route?.routes)}
     </div>
   );
-}
+};
 
-export default Main;
+export default connect(propsToState, propsToDispatch)(Main);

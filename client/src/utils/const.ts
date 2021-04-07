@@ -4,3 +4,4 @@
 
 export const ROUTER_WHITE_LIST: RegExp[] = []; // 路由白名单(无需JWT)
 export const ACCESS_TOKEN_NAME = 'ACCESS_TOKEN'; // JWT的localStorage键
+export const USER_INFO_NAME = 'USER_INFO';
