@@ -3,10 +3,13 @@
  * @author Uni
  */
 
+import LoginAndRegister from './modules/LoginAndRegister';
 import Main from './modules/Main';
 import Admin from './modules/Admin';
 import Project from './modules/Project';
 import Test from 'modules/test';
+import Register from './modules/LoginAndRegister/Register';
+import Login from 'modules/LoginAndRegister/Login';
 
 export enum PathName {
   MAIN = '/main',
@@ -27,6 +30,23 @@ const routes = [
         path: PathName.PROJECT,
         exact: true,
         component: Project,
+      },
+    ],
+  },
+  // 登陆注册页面的路由
+  {
+    path: PathName.SIGN,
+    component: LoginAndRegister,
+    routes: [
+      {
+        path: PathName.LOGIN,
+        exact: true,
+        component: Login,
+      },
+      {
+        path: PathName.REGISTER,
+        exact: true,
+        component: Register,
       },
     ],
   },

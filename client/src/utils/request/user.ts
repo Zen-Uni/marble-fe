@@ -1,6 +1,5 @@
 import { request } from './index';
-import { Restful } from './type';
-// import { store } from '@/store';
+import { Restful, _Restful } from './type';
 
 const baseUrl = '/api/user';
 
@@ -10,9 +9,22 @@ export enum Gender {
   FEMALE = 2,
 }
 
+export enum GenderCN {
+  UNKNOWN = '未知',
+  MALE = '男',
+  FEMALE = '女',
+}
+
 export enum Group {
-  COMMON = 0,
+  SUBSCRIBER = 0,
   ADMIN = 1,
+  SUPER_ADMIN = 2,
+}
+
+export enum GroupCN {
+  SUBSCRIBER = '普通用户',
+  ADMIN = '管理员',
+  SUPER_ADMIN = '超级管理员',
 }
 
 export interface User {
@@ -85,6 +97,17 @@ export const register = async (user: Partial<User>) => {
   return await request<Restful<User>>({
     method: 'POST',
     url: `${baseUrl}/register`,
+    data: user,
+  });
+};
+
+/**
+ * 发送邮箱验证码
+ */
+export const sendCaptcha = async (user: Partial<User>) => {
+  return await request<_Restful>({
+    method: 'POST',
+    url: `${baseUrl}/captcha`,
     data: user,
   });
 };
